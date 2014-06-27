@@ -1,5 +1,5 @@
 class QuotesController < Rulers::Controller
   def a_quote
-    "The Lord is in this."
+    render :a_quote, :noun => :question
   end
 end

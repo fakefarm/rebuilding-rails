@@ -1,7 +1,6 @@
 module Rulers
   class Application
     def get_controller_and_action(env)
-      require 'pry'; binding.pry
       _, const, action, after = env["PATH_INFO"].split('/', 4)
       const = const.capitalize
       const += "Controller"
