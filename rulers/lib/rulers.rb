@@ -3,6 +3,7 @@ require 'rulers/routing'
 require 'rulers/util'
 require 'rulers/dependencies'
 require 'rulers/controller'
+require 'rulers/file_model'
 
 
 module Rulers
@@ -15,7 +16,6 @@ module Rulers
         return [200, {'Content-Type' => 'text/html'}, ['the index page'] ]
       end
 
-      require 'pry'; binding.pry
       klass, act = get_controller_and_action(env)
       controller = klass.new(env)
       text = controller.send(act)

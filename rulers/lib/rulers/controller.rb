@@ -1,7 +1,9 @@
 require 'erubis'
+require 'rulers/file_model'
 
 module Rulers
   class Controller
+    include Rulers::Model
     # Question - why is this this first pry that get's hit, instead of something in routing?
 
     def controller_name

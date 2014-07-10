@@ -20,6 +20,7 @@ Gem::Specification.new do |spec|
 
   spec.add_runtime_dependency "rack"
   spec.add_runtime_dependency "erubis"
+  spec.add_runtime_dependency "multi_json"
 
   spec.add_development_dependency "bundler", "~> 1.3"
   spec.add_development_dependency "pry"
