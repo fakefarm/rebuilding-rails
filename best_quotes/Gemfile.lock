@@ -1,7 +1,7 @@
 PATH
   remote: ../rulers
   specs:
-    rulers (0.0.5)
+    rulers (0.0.6)
       erubis
       multi_json
       rack

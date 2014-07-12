@@ -1,10 +1,25 @@
 require 'erubis'
 require 'rulers/file_model'
+require 'rack/request'
 
 module Rulers
   class Controller
     include Rulers::Model
     # Question - why is this this first pry that get's hit, instead of something in routing?
+    
+    def response(text, status = 200, headers = {})
+      raise "Already responded" if @response
+      a = [text].flatten
+      @response = Rack::Response.new(a, status, headers)
+    end
+    
+    def request
+      @request ||= Rack::Request.new(@env)
+    end
+
+    def params
+      request.params
+    end    
 
     def controller_name
       klass = self.class
