@@ -8,12 +8,22 @@ module Rulers
     # Question - why is this this first pry that get's hit, instead of something in routing?
     
     def response(text, status = 200, headers = {})
+      require 'pry'; binding.pry
       raise "Already responded" if @response
       a = [text].flatten
       @response = Rack::Response.new(a, status, headers)
     end
     
+    def get_response
+      @response
+    end
+
+    def render_response(*args)
+      response(render(*args))
+    end
+    
     def request
+      require 'pry'; binding.pry
       @request ||= Rack::Request.new(@env)
     end
 
