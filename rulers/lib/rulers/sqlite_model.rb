@@ -1,5 +1,5 @@
-require 'sqlite3'
-require 'rulers/util'
+require "sqlite3"
+require "rulers/util"
 
 DB = SQLite3::Database.new 'test.db'
 
@@ -44,26 +44,27 @@ SQL
     end
     
       def self.create(values)
+        require 'pry'; binding.pry
         values.delete "id"
         keys = schema.keys - ["id"]
         vals = keys.map do |key|
           values[key] ? to_sql(values[key]) : "null"
         end
 
-        DB.execute <<SQL
+        DB.execute<<SQL
         INSERT INTO #{table} (#{keys.join ","})
           VALUES (#{vals.join ","});
-SQL
-              data = Hash[keys.zip vals]
-              sql = "SELECT last_insert_rowid();"
-              data["id"] = DB.execute(sql)[0][0]
-              self.new data
+        SQL
+          data = Hash[keys.zip vals]
+          sql = "SELECT last_insert_rowid();"
+          data["id"] = DB.execute(sql)[0][0]
+          self.new data
       end
 
       def self.count
-        DB.execute(<<SQL)[0][0] 
-        SELECT COUNT(*) FROM #{table}
-SQL
+        DB.execute<<SQL[0][0] 
+          SELECT COUNT(*) FROM #{table}
+        SQL
       end
       
       def self.table
@@ -80,10 +81,10 @@ SQL
       end
       
       def self.find(id)
-        row = DB.execute <<SQL
-select #{schema.keys.join ","} from #{table}
-where id = #{id};
-SQL
+        row = DB.execute<<SQL
+        select #{schema.keys.join ","} from #{table}
+        where id = #{id};
+        SQL
         data = Hash[schema.keys.zip row[0]]
         self.new data
       end
