@@ -44,7 +44,6 @@ SQL
     end
     
       def self.create(values)
-        require 'pry'; binding.pry
         values.delete "id"
         keys = schema.keys - ["id"]
         vals = keys.map do |key|
@@ -52,8 +51,8 @@ SQL
         end
 
         DB.execute <<SQL
-        INSERT INTO #{table} (#{keys.join ","})
-          VALUES (#{vals.join ","});
+INSERT INTO #{table} (#{keys.join ","})
+VALUES (#{vals.join ","});
 SQL
           data = Hash[keys.zip vals]
           sql = "SELECT last_insert_rowid();"
@@ -62,8 +61,8 @@ SQL
       end
 
       def self.count
-        DB.execute(<<SQL)[0][0] 
-          SELECT COUNT(*) FROM #{table}
+DB.execute(<<SQL)[0][0] 
+SELECT COUNT(*) FROM #{table}
 SQL
       end
       
@@ -81,10 +80,10 @@ SQL
       end
       
       def self.find(id)
-        row = DB.execute<<SQL
-        select #{schema.keys.join ","} from #{table}
-        where id = #{id};
-        SQL
+        row = DB.execute <<SQL
+select #{schema.keys.join ","} from #{table}
+where id = #{id};
+SQL
         data = Hash[schema.keys.zip row[0]]
         self.new data
       end
@@ -93,7 +92,7 @@ SQL
         @hash[name.to_s]
       end
 
-      def []=(name, value}
+      def []=(name, value)
         @hash[name.to_s] = value
       end
     end
