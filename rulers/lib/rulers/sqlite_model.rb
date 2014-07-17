@@ -32,9 +32,9 @@ module Rulers
         "#{k}=#{self.class.to_sql(v)}"
       end.join ","
       DB.exectue <<SQL
-UPDATE #{self.class.table}
-SET #{fields}
-WHERE id = #{@hash["id"]}
+        UPDATE #{self.class.table}
+        SET #{fields}
+        WHERE id = #{@hash["id"]}
 SQL
        true
     end
@@ -51,10 +51,10 @@ SQL
           values[key] ? to_sql(values[key]) : "null"
         end
 
-        DB.execute<<SQL
+        DB.execute <<SQL
         INSERT INTO #{table} (#{keys.join ","})
           VALUES (#{vals.join ","});
-        SQL
+SQL
           data = Hash[keys.zip vals]
           sql = "SELECT last_insert_rowid();"
           data["id"] = DB.execute(sql)[0][0]
@@ -62,9 +62,9 @@ SQL
       end
 
       def self.count
-        DB.execute<<SQL[0][0] 
+        DB.execute(<<SQL)[0][0] 
           SELECT COUNT(*) FROM #{table}
-        SQL
+SQL
       end
       
       def self.table
