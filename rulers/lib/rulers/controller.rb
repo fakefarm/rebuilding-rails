@@ -5,8 +5,28 @@ require 'rack/request'
 module Rulers
   class Controller
     include Rulers::Model
-    # Question - why is this this first pry that get's hit, instead of something in routing?
     
+    def initialize(env)
+      @env = env
+      @routing_params = {}
+    end
+
+    def dispatch(action, routing_params={})
+      @routing_params = routing_params
+      text = self.send(action)
+      if get_response
+        st, hd, rs = get_response.to_a
+        [st, hd, [rs].flatten]
+      else
+        [200, {'Content-Type' => 'text/html'},
+          [text].flatten]
+      end
+    end
+
+    def self.action(act, rp = {})
+      proc { |e| self.new(e).dispatch(act, rp) }
+    end
+
     def response(text, status = 200, headers = {})
       require 'pry'; binding.pry
       raise "Already responded" if @response
@@ -28,7 +48,7 @@ module Rulers
     end
 
     def params
-      request.params
+      request.params.merge @routing_params
     end    
 
     def controller_name
@@ -42,10 +62,6 @@ module Rulers
       template = File.read filename
       eruby = Erubis::Eruby.new(template)
       eruby.result locals.merge(env: env)
-    end
-
-    def initialize(env)
-      @env = env
     end
 
     def env
